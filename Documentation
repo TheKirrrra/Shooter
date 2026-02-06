@@ -1,0 +1,43 @@
+The game runs in the terminal and uses non-blocking stdin for controls.
+
+## Controls
+
+- `W` / `w` — move up
+- `S` / `s` — move down
+- `A` / `a` — move left
+- `D` / `d` — move right
+- `Space` — shoot
+- `Q` / `q` — quit
+
+Note: The in-game screen mentions `Enter` and `Esc`, but the current input handler recognizes `Space` for shooting and `Q` for quitting.
+
+## Windows: `'stty' is not recognized...'` message
+
+On Windows the `stty` utility is not available. The script detects Windows and:
+
+- Attempts to enable VT100 (ANSI) using `sapi_windows_vt100_support`
+- Skips `stty` calls (no error affects game execution)
+
+If you see `'stty' is not recognized as an internal or external command...'` from other tools, it is unrelated to the script; run the game with `php shooter.php` in an ANSI-capable terminal (Windows Terminal / newer PowerShell / ConEmu).
+
+## Code structure
+
+- `Entity`, `Spaceship`, `Enemy`, `Bullet` — base classes for actors
+- `Scene` — game state, rendering, movement, collisions, spawning
+- Terminal helpers: enable/disable raw mode and shutdown restore logic
+- Main loop at the bottom of `shooter.php` — reads input, updates, renders
+
+## Known issues / TODO
+
+- On Windows `pcntl_signal` is not available; graceful Ctrl+C handling may be limited.
+- UI message mentions `Enter`/`Esc` which are not implemented in the input handler.
+- Consider debouncing shooting or adding continuous-fire options.
+- Add unit tests and configuration options (speed, enemy count).
+
+## Contributing
+
+Clone the repo, edit `shooter.php`, and run locally. Pull requests are welcome.
+
+## License
+
+MIT
